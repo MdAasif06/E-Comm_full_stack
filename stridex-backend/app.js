@@ -3,6 +3,10 @@ import cors from "cors";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import authRoutes from "./routes/auth.routes.js"
+import testRoutes from "./routes/test.routes.js";
+import productRoutes from "./routes/product.routes.js";
+
+
 const app = express();
 
 // Security Middlewares
@@ -19,8 +23,9 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.send("StrideX API Running 🚀");
+  res.send("StrideX API Running");
 });
 app.use("/api/auth", authRoutes);
-
+app.use("/api/products", productRoutes);
+// app.use("/api/test", testRoutes);
 export default app;
