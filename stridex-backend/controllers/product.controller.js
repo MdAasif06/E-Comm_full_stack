@@ -1,5 +1,5 @@
 import Product from "../models/product.model.js";
-
+import mongoose from "mongoose";
 
 //  Create Product (Admin Only)
 export const createProduct = async (req, res) => {
@@ -69,11 +69,20 @@ export const getSingleProduct = async (req, res) => {
 // Update Product (Admin)
 export const updateProduct = async (req, res) => {
   try {
+    const { id } = req.params;
+     if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Invalid ID" });
+    }
+    
     const product = await Product.findByIdAndUpdate(
-      req.params.id,
+      id,
       req.body,
-      { new: true }
-    );
+      { returnDocument: "after",runValidators: true }
+
+    );if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+    
 
     res.json(product);
   } catch (error) {
