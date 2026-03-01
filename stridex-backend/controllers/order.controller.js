@@ -68,3 +68,17 @@ export const createCheckoutSession = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+
+// User Order History
+export const getMyOrders = async (req, res) => {
+  try {
+    const orders = await Order.find({ user: req.user._id })
+      .populate("items.product", "title price image")
+      .sort({ createdAt: -1 });
+
+    res.json(orders);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

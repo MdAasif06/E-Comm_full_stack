@@ -27,3 +27,17 @@ export const getSalesAnalytics = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+
+export const getAllOrders = async (req, res) => {
+  try {
+    const orders = await Order.find({ paymentStatus: "paid" })
+      .populate("user", "name email")
+      .populate("items.product", "title price")
+      .sort({ createdAt: -1 });
+
+    res.json(orders);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
