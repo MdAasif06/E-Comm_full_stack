@@ -11,7 +11,6 @@ export const createProduct = async (req, res) => {
   }
 };
 
-
 //  Get All Products (Pagination + Search + Filter + Sort)
 export const getProducts = async (req, res) => {
   try {
@@ -19,8 +18,11 @@ export const getProducts = async (req, res) => {
 
     const query = {};
 
+    // if (search) {
+    //   query.title = { $regex: search, $options: "i" };
+    // }
     if (search) {
-      query.title = { $regex: search, $options: "i" };
+      query.$text = { $search: search };
     }
 
     if (category) {
@@ -50,46 +52,40 @@ export const getProducts = async (req, res) => {
   }
 };
 
-
 //  Get Single Product
 export const getSingleProduct = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
 
-    if (!product)
-      return res.status(404).json({ message: "Product not found" });
+    if (!product) return res.status(404).json({ message: "Product not found" });
 
     res.json(product);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
-
 
 // Update Product (Admin)
 export const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
-     if (!mongoose.Types.ObjectId.isValid(id)) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ message: "Invalid ID" });
     }
-    
-    const product = await Product.findByIdAndUpdate(
-      id,
-      req.body,
-      { returnDocument: "after",runValidators: true }
 
-    );if (!product) {
+    const product = await Product.findByIdAndUpdate(id, req.body, {
+      returnDocument: "after",
+      runValidators: true,
+    });
+    if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
-    
 
     res.json(product);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
-
 
 // Delete Product (Admin)
 export const deleteProduct = async (req, res) => {
