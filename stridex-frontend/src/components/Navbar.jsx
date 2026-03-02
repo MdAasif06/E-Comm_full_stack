@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { useCart } from "../context/CartContext";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
+  const { cartItems } = useCart();
 
   return (
     <nav className="fixed top-0 left-0 w-full bg-black text-white shadow-md z-50">
@@ -18,6 +20,7 @@ const Navbar = () => {
           <Link to="/" className="hover:text-red-500 transition">
             Home
           </Link>
+          <Link to="/cart">Cart ({cartItems.length})</Link>
 
           {!user ? (
             <>

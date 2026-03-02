@@ -1,10 +1,13 @@
-import AppRoutes from "./routes/AppRoutes";
 import { AuthProvider } from "./context/AuthContext";
+import { CartProvider } from "./context/CartContext";
+import AppRoutes from "./routes/AppRoutes";
 
 const App = () => {
   return (
     <AuthProvider>
-      <AppRoutes />
+      <CartProvider>
+        <AppRoutes />
+      </CartProvider>
     </AuthProvider>
   );
 };
