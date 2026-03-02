@@ -1,5 +1,6 @@
 import { useCart } from "../context/CartContext";
 import { Link } from "react-router-dom";
+import API from "../api/axios";
 
 const Cart = () => {
   const { cartItems, removeFromCart, increaseQuantity, decreaseQuantity } =
@@ -20,6 +21,18 @@ const Cart = () => {
       </div>
     );
   }
+  const handleCheckout = async () => {
+    try {
+      const response = await API.post("/orders/checkout", {
+        items: cartItems,
+      });
+
+      window.location.href = response.data.url; // Stripe page redirect
+    } catch (error) {
+      console.error(error);
+      alert("Checkout failed");
+    }
+  };
 
   return (
     <div className="max-w-6xl mx-auto py-10">
@@ -76,9 +89,12 @@ const Cart = () => {
       <div className="mt-10 text-right">
         <h2 className="text-xl font-bold mb-4">Total: ₹ {total}</h2>
 
-        <Link to="/checkout" className="bg-black text-white px-6 py-3 rounded">
+        <button
+          onClick={handleCheckout}
+          className="bg-black text-white px-6 py-3 rounded"
+        >
           Proceed to Checkout
-        </Link>
+        </button>
       </div>
     </div>
   );

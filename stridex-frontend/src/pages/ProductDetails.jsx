@@ -32,6 +32,32 @@ const ProductDetails = () => {
       </div>
     );
   }
+  const handleBuyNow = async () => {
+    if (!selectedSize) {
+      alert("Please select size");
+      return;
+    }
+
+    const selectedSizeObj = product.sizes.find((s) => s.size === selectedSize);
+
+    if (!selectedSizeObj || quantity > selectedSizeObj.stock) {
+      alert("Not enough stock");
+      return;
+    }
+
+    try {
+      const { data } = await API.post("/orders/checkout", {
+        productId: product._id,
+        size: selectedSize,
+        quantity,
+      });
+
+      window.location.href = data.url;
+    } catch (error) {
+      console.error(error);
+      alert("Checkout failed");
+    }
+  };
 
   return (
     <div className="max-w-6xl mx-auto py-10 grid md:grid-cols-2 gap-10">
@@ -86,27 +112,18 @@ const ProductDetails = () => {
               alert("Please select size");
               return;
             }
-
-            const selectedSizeObj = product.sizes.find(
-              (s) => s.size === selectedSize,
-            );
-
-            if (!selectedSizeObj) {
-              alert("Invalid size selected");
-              return;
-            }
-
-            if (quantity > selectedSizeObj.stock) {
-              alert("Not enough stock available");
-              return;
-            }
-
             addToCart(product, selectedSize, quantity);
             alert("Added to cart");
           }}
           className="bg-red-600 text-white px-6 py-3 rounded"
         >
           Add to Cart
+        </button>
+        <button
+          onClick={handleBuyNow}
+          className="bg-black text-white px-6 py-3 rounded"
+        >
+          Buy Now
         </button>
       </div>
     </div>

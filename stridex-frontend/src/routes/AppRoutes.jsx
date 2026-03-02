@@ -5,6 +5,8 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import ProductDetails from "../pages/ProductDetails";
 import Cart from "../pages/Cart";
+import Success from "../pages/Success";
+import Cancel from "../pages/Cancel";
 
 const AppRoutes = () => {
   return (
@@ -16,6 +18,8 @@ const AppRoutes = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/success" element={<Success />} />
+          <Route path="/cancel" element={<Cancel />} />
         </Routes>
       </MainLayout>
     </BrowserRouter>
