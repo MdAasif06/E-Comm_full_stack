@@ -13,8 +13,9 @@ import AdminDashboard from "../pages/AdminDashboard";
 const AppRoutes = () => {
   return (
     <BrowserRouter>
-      <MainLayout>
-        <Routes>
+      <Routes>
+        {/* Layout Route */}
+        <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -24,8 +25,8 @@ const AppRoutes = () => {
           <Route path="/cancel" element={<Cancel />} />
           <Route path="/orders" element={<Orders />} />
           <Route path="/admin" element={<AdminDashboard />} />
-        </Routes>
-      </MainLayout>
+        </Route>
+      </Routes>
     </BrowserRouter>
   );
 };
