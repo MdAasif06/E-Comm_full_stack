@@ -1,7 +1,10 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://e-ccomm-backend.onrender.com",
+  baseURL: import.meta.env.VITE_API_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
 // Token auto attach
