@@ -7,6 +7,8 @@ import ProductDetails from "../pages/ProductDetails";
 import Cart from "../pages/Cart";
 import Success from "../pages/Success";
 import Cancel from "../pages/Cancel";
+import Orders from "../pages/Orders";
+import AdminDashboard from "../pages/AdminDashboard";
 
 const AppRoutes = () => {
   return (
@@ -20,6 +22,8 @@ const AppRoutes = () => {
           <Route path="/cart" element={<Cart />} />
           <Route path="/success" element={<Success />} />
           <Route path="/cancel" element={<Cancel />} />
+          <Route path="/orders" element={<Orders />} />
+          <Route path="/admin" element={<AdminDashboard />} />
         </Routes>
       </MainLayout>
     </BrowserRouter>

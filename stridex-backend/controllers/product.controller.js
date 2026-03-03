@@ -51,6 +51,21 @@ export const getProducts = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+// @desc    Get low stock products
+// @route   GET /api/products/low-stock
+// @access  Private/Admin
+export const getLowStockProducts = async (req, res) => {
+  try {
+    const products = await Product.find({
+      "sizes.stock": { $lt: 5 },
+    });
+
+    res.status(200).json(products);
+  } catch (error) {
+    console.error("Low stock fetch error:", error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
 
 //  Get Single Product
 export const getSingleProduct = async (req, res) => {

@@ -21,6 +21,7 @@ const Navbar = () => {
             Home
           </Link>
           <Link to="/cart">Cart ({cartItems.length})</Link>
+          <Link to="/orders">Orders</Link>
 
           {!user ? (
             <>
