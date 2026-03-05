@@ -4,44 +4,9 @@ import uploadImage from "../services/cloudinary.service.js";
 import fs from "fs";
 
 //  Create Product (Admin Only)
-// export const createProduct = async (req, res) => {
-//   try {
-//     const { title, description, price, category, stock } = req.body;
-
-//     //  First check image
-//     if (!req.file) {
-//       return res.status(400).json({ message: "Image required" });
-//     }
-
-//     // Upload to Cloudinary
-//     const result = await uploadImage(req.file.path);
-
-//     console.log("Cloudinary Result:", result);
-
-//     //  Create product AFTER upload
-//     const product = await Product.create({
-//       title,
-//       description,
-//       price,
-//       category,
-//       stock,
-//       image: {
-//         url: result.secure_url,
-//         public_id: result.public_id,
-//       },
-//     });
-//     console.log(product);
-//     //  Delete temp file
-//     fs.unlinkSync(req.file.path);
-
-//     res.status(201).json(product);
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ message: "Server error" });
-//   }
-// };
 export const createProduct = async (req, res) => {
   try {
+
     const { title, description, price, category } = req.body;
 
     if (!req.file) {
@@ -50,7 +15,7 @@ export const createProduct = async (req, res) => {
 
     const result = await uploadImage(req.file.path);
 
-    const parsedSizes = req.body.sizes
+    const sizes = req.body.sizes
       ? JSON.parse(req.body.sizes)
       : [];
 
@@ -59,7 +24,7 @@ export const createProduct = async (req, res) => {
       description,
       price,
       category,
-      sizes: parsedSizes,  // IMPORTANT
+      sizes,
       image: {
         url: result.secure_url,
         public_id: result.public_id,
@@ -69,6 +34,7 @@ export const createProduct = async (req, res) => {
     fs.unlinkSync(req.file.path);
 
     res.status(201).json(product);
+
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Server error" });
