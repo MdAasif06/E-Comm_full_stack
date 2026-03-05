@@ -10,13 +10,13 @@ import { validate } from "../middlewares/validate.middleware.js";
 import { productValidationSchema } from "../validators/product.validator.js";
 import { protect, adminOnly } from "../middlewares/auth.middleware.js";
 import { getLowStockProducts } from "../controllers/product.controller.js";
+import upload from "../utils/upload.js";
 const router = express.Router();
-
 router.get("/", getProducts);
 router.get("/low-stock", protect, adminOnly, getLowStockProducts);
 router.get("/:id", getSingleProduct);
 
-router.post("/", protect, adminOnly,validate(productValidationSchema), createProduct);
+router.post("/add-product", protect, adminOnly,validate(productValidationSchema), upload.single("image"), createProduct);
 router.put("/:id", protect, adminOnly, updateProduct);
 router.delete("/:id", protect, adminOnly, deleteProduct);
 

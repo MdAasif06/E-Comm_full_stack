@@ -1,13 +1,77 @@
 import Product from "../models/product.model.js";
 import mongoose from "mongoose";
+import uploadImage from "../services/cloudinary.service.js";
+import fs from "fs";
 
 //  Create Product (Admin Only)
+// export const createProduct = async (req, res) => {
+//   try {
+//     const { title, description, price, category, stock } = req.body;
+
+//     //  First check image
+//     if (!req.file) {
+//       return res.status(400).json({ message: "Image required" });
+//     }
+
+//     // Upload to Cloudinary
+//     const result = await uploadImage(req.file.path);
+
+//     console.log("Cloudinary Result:", result);
+
+//     //  Create product AFTER upload
+//     const product = await Product.create({
+//       title,
+//       description,
+//       price,
+//       category,
+//       stock,
+//       image: {
+//         url: result.secure_url,
+//         public_id: result.public_id,
+//       },
+//     });
+//     console.log(product);
+//     //  Delete temp file
+//     fs.unlinkSync(req.file.path);
+
+//     res.status(201).json(product);
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// };
 export const createProduct = async (req, res) => {
   try {
-    const product = await Product.create(req.body);
+    const { title, description, price, category } = req.body;
+
+    if (!req.file) {
+      return res.status(400).json({ message: "Image required" });
+    }
+
+    const result = await uploadImage(req.file.path);
+
+    const parsedSizes = req.body.sizes
+      ? JSON.parse(req.body.sizes)
+      : [];
+
+    const product = await Product.create({
+      title,
+      description,
+      price,
+      category,
+      sizes: parsedSizes,  // IMPORTANT
+      image: {
+        url: result.secure_url,
+        public_id: result.public_id,
+      },
+    });
+
+    fs.unlinkSync(req.file.path);
+
     res.status(201).json(product);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.log(error);
+    res.status(500).json({ message: "Server error" });
   }
 };
 
@@ -103,10 +167,18 @@ export const updateProduct = async (req, res) => {
 };
 
 // Delete Product (Admin)
+// Delete Product (Bonus – Also delete image from cloudinary)
 export const deleteProduct = async (req, res) => {
   try {
-    await Product.findByIdAndDelete(req.params.id);
-    res.json({ message: "Product deleted" });
+    const product = await Product.findById(req.params.id);
+
+    if (!product) return res.status(404).json({ message: "Product not found" });
+
+    await cloudinary.uploader.destroy(product.image.public_id);
+
+    await product.deleteOne();
+
+    res.json({ message: "Product deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

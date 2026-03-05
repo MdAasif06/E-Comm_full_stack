@@ -9,7 +9,8 @@ import Success from "../pages/Success";
 import Cancel from "../pages/Cancel";
 import Orders from "../pages/Orders";
 import AdminDashboard from "../pages/AdminDashboard";
-
+import ProductListing from "../pages/ProductListing";
+import AddProduct from "../pages/AddProduct";
 const AppRoutes = () => {
   return (
     <BrowserRouter>
@@ -17,6 +18,8 @@ const AppRoutes = () => {
         {/* Layout Route */}
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
+          <Route path="/products" element={<ProductListing />} />
+          <Route path="/admin/add-product" element={<AddProduct />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/product/:id" element={<ProductDetails />} />

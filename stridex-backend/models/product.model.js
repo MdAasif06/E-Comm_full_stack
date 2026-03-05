@@ -12,7 +12,7 @@ const sizeSchema = new mongoose.Schema(
       min: 0,
     },
   },
-  { _id: false }
+  { _id: false },
 );
 
 const productSchema = new mongoose.Schema(
@@ -34,7 +34,7 @@ const productSchema = new mongoose.Schema(
     },
     category: {
       type: String,
-      enum: ["Sneakers", "Formal", "Sports","Casual","Fitness"],
+      enum: ["Sneakers", "Formal", "Sports", "Casual", "Fitness"],
       required: true,
     },
     brand: {
@@ -43,15 +43,21 @@ const productSchema = new mongoose.Schema(
     },
     sizes: [sizeSchema],
     image: {
-      type: String,
-      required: true,
+      url: {
+        type: String,
+        required: true,
+      },
+      public_id: {
+        type: String,
+        required: true,
+      },
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 productSchema.index({ title: 1 }, { unique: true });
 // Indexing for better performance
-productSchema.index({ title: "text", description: "text" });    // Text search optimized
-productSchema.index({ category: 1 });      // Category filtering optimized
-productSchema.index({ price: 1 });         // Sorting optimized
+productSchema.index({ title: "text", description: "text" }); // Text search optimized
+productSchema.index({ category: 1 }); // Category filtering optimized
+productSchema.index({ price: 1 }); // Sorting optimized
 export default mongoose.model("Product", productSchema);

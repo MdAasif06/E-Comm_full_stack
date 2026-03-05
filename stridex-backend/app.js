@@ -9,9 +9,14 @@ import orderRoutes from "./routes/order.routes.js";
 import webhookRoutes from "./routes/webhook.routes.js";
 
 import adminRoutes from "./routes/admin.routes.js";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
-
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // Security Middlewares
 app.use(helmet());
 
@@ -22,7 +27,12 @@ app.use(
   })
 );
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 app.use("/api/webhook", webhookRoutes);
 app.use(express.json());
 
