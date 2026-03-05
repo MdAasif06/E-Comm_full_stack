@@ -62,7 +62,7 @@ const ProductDetails = () => {
   return (
     <div className="max-w-6xl mx-auto py-10 grid md:grid-cols-2 gap-10">
       <img
-        src={product.image}
+        src={product.image.url}
         alt={product.title}
         className="w-full h-84 object-cover rounded-xl"
       />

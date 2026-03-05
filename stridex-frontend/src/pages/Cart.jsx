@@ -23,14 +23,21 @@ const Cart = () => {
   }
   const handleCheckout = async () => {
     try {
+      const items = cartItems.map((item) => ({
+        productId: item._id,
+        size: item.size,
+        quantity: item.quantity,
+      }));
+
+      console.log("Sending items:", items);
+
       const response = await API.post("/orders/checkout", {
-        items: cartItems,
+        items: items,
       });
 
-      window.location.href = response.data.url; // Stripe page redirect
+      window.location.href = response.data.url;
     } catch (error) {
-      console.error(error);
-      alert("Checkout failed");
+      console.error(error.response?.data);
     }
   };
 
@@ -46,7 +53,7 @@ const Cart = () => {
           >
             <div className="flex items-center gap-4">
               <img
-                src={item.image}
+                src={item.image.url}
                 alt={item.title}
                 className="w-20 h-20 object-cover rounded"
               />

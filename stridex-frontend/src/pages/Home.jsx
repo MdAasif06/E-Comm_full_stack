@@ -44,7 +44,7 @@ const Home = () => {
             className="bg-white shadow-md rounded-lg p-4 hover:shadow-xl transition"
           >
             <img
-              src={product.image}
+              src={product.image.url}
               alt={product.title}
               className="h-48 w-full object-cover rounded"
             />

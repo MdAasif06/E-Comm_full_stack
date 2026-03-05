@@ -9,8 +9,11 @@ function AddProduct() {
     description: "",
     price: "",
     category: "",
+    brand: "",
     stock: "",
+    sizes: "",
   });
+  console.log(product);
 
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
@@ -37,12 +40,11 @@ function AddProduct() {
     formData.append("description", product.description);
     formData.append("price", product.price);
     formData.append("category", product.category);
-    formData.append("stock", product.stock);
     formData.append("image", image);
     const sizes = [
-      { size: 6, stock: 5 },
-      { size: 7, stock: 5 },
-      { size: 8, stock: 5 },
+      { size: 6, stock: product.stock },
+      { size: 7, stock: product.stock },
+      { size: 8, stock: product.stock },
     ];
 
     formData.append("sizes", JSON.stringify(sizes));
@@ -53,12 +55,20 @@ function AddProduct() {
       alert("Product Added Successfully");
       navigate("/");
       // fields reset
-      setProduct(res.data.products);
+      setProduct({
+        title: "",
+        description: "",
+        price: "",
+        category: "",
+        brand: "",
+        stock: "",
+        sizes: "",
+      });
 
       setImage(null);
       setPreview(null);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
